@@ -51,13 +51,16 @@ function useScrollInfo() {
     if (node) {
       // When the ref is first set (after mounting)
       node.addEventListener('scroll', handleScroll);
+      window.addEventListener('resize', handleScroll);
       ref.current = node;
       handleScroll();  // initialization
     } else if (ref.current) {
       // When unmounting
       ref.current.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
     }
   }, []);
+
 
   return [scroll, setRef, ref];
 }
