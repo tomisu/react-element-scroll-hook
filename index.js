@@ -1,9 +1,44 @@
-import { useRef, useState, useCallback} from 'react';
+import { useRef, useState, useCallback } from 'react';
 
+
+function throttle(func, wait) {
+  let context, args, result;
+  let timeout = null;
+  let previous = 0;
+  const later = function () {
+    timeout = null;
+    result = func.apply(context, args);
+    if (!timeout) {
+      context = args = null;
+    }
+  };
+  return function () {
+    const now = Date.now();
+    const remaining = wait - (now - previous);
+    context = this;
+    args = arguments;
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      previous = now;
+      result = func.apply(context, args);
+      if (!timeout) {
+        context = args = null;
+      }
+    } else if (!timeout) {
+      timeout = setTimeout(later, remaining);
+    }
+    return result;
+  };
+}
 
 function useScrollInfo() {
   const [scroll, setScroll] = useState({ x: {}, y: {} });
   const ref = useRef(null);
+
+  const throttleTime = 50;
 
   function handleScroll() {
     const element = ref.current;
@@ -47,17 +82,19 @@ function useScrollInfo() {
     });
   }
 
+  const throttledHandleScroll = throttle(handleScroll, throttleTime);
+
   const setRef = useCallback(node => {
     if (node) {
       // When the ref is first set (after mounting)
-      node.addEventListener('scroll', handleScroll);
-      window.addEventListener('resize', handleScroll);
+      node.addEventListener('scroll', throttledHandleScroll);
+      window.addEventListener('resize', throttledHandleScroll);
       ref.current = node;
-      handleScroll();  // initialization
+      throttledHandleScroll();  // initialization
     } else if (ref.current) {
       // When unmounting
-      ref.current.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
+      ref.current.removeEventListener('scroll', throttledHandleScroll);
+      window.removeEventListener('resize', throttledHandleScroll);
     }
   }, []);
 
