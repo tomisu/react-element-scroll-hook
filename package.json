@@ -1,0 +1,34 @@
+{
+  "name": "react-element-scroll-hook",
+  "version": "1.0.1",
+  "description": "A react hook to use the scroll information of an element",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomisu/react-element-scroll-hook.git"
+  },
+  "keywords": [
+    "scroll",
+    "position",
+    "react",
+    "hook",
+    "scroll position",
+    "react hook",
+    "element scroll",
+    "scroll info"
+  ],
+  "author": "Tomás Tarragón <tomastarragon@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tomisu/react-element-scroll-hook/issues"
+  },
+  "homepage": "https://github.com/tomisu/react-element-scroll-hook#readme",
+  "peerDependencies": {
+    "react-dom": "^16.8.0",
+    "react": "^16.8.6"
+  },
+  "devDependencies": {
+    "react-dom": "^16.8.0",
+    "react": "^16.8.6"
+  }
+}
