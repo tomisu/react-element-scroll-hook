@@ -37,6 +37,7 @@ function throttle(func, wait) {
 function useScrollInfo() {
   const [scroll, setScroll] = useState({ x: {}, y: {} });
   const ref = useRef(null);
+  const previousScroll = useRef(null);
 
   const throttleTime = 50;
 
@@ -66,20 +67,26 @@ function useScrollInfo() {
       classNameX = 'scroll-middle-x';
     }
 
-    setScroll({
+    const previous = previousScroll.current;
+
+    const scrollInfo = {
       x: {
         percentage: percentageX,
         value: element.scrollLeft,
         total: maxX,
         className: classNameX,
+        direction: previous ? Math.sign(element.scrollLeft - previous.x.value) : 0,
       },
       y: {
         percentage: percentageY,
         value: element.scrollTop,
         total: maxY,
         className: classNameY,
+        direction: previous ? Math.sign(element.scrollTop - previous.y.value) : 0,
       }
-    });
+    };
+    previousScroll.current = scrollInfo;
+    setScroll(scrollInfo);
   }
 
   const throttledHandleScroll = throttle(handleScroll, throttleTime);

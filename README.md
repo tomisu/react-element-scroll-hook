@@ -31,6 +31,7 @@ When using this hook, you'll get an object containing the scroll data. It has tw
  * total: amount of pixels that can be scrolled
  * percentage: a value from 0 to 1 or `null` if there's no scroll
  * className: a string to identify the state of the scroll
+ * direction: the direction of the last scroll: 1 for down/right, -1 for up/left, 0 for initial value
 
 #### className
 For the y axis, className can take 4 values:
@@ -47,12 +48,14 @@ For the x axis, the values are:
     value: 120,
     total: 240,
     className: 'scroll-middle-x',
+    direction: 1
   },
   y: {
     percentage: 1,
     value: 200,
     total: 200,
     className: 'scroll-bottom',
+    direction: -1
   }
 }
 ```
