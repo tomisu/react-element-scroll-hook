@@ -1,6 +1,10 @@
 import { useRef, useState, useCallback } from 'react';
 
 
+// Edge has a bug where scrollHeight is 1px bigger than clientHeight when there's no scroll.
+const isEdge = /Edge\/\d./i.test(navigator.userAgent);
+
+
 function throttle(func, wait) {
   let context, args, result;
   let timeout = null;
@@ -43,8 +47,13 @@ function useScrollInfo() {
 
   function handleScroll() {
     const element = ref.current;
-    const maxY = element.scrollHeight - element.clientHeight;
+    let maxY = element.scrollHeight - element.clientHeight;
     const maxX = element.scrollWidth - element.clientWidth;
+
+    // Edge has a bug where scrollHeight is 1px bigger than clientHeight when there's no scroll.
+    if (isEdge && maxY === 1 && element.scrollTop === 0) {
+      maxY = 0;
+    }
 
     const percentageY = maxY !== 0 ? element.scrollTop / maxY : null;
     const percentageX = maxX !== 0 ? element.scrollLeft / maxX : null;
