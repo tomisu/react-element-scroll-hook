@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 
 // Edge has a bug where scrollHeight is 1px bigger than clientHeight when there's no scroll.
