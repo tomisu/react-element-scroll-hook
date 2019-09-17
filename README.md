@@ -38,7 +38,7 @@ For the y axis, className can take 4 values:
 `scroll-top`, `scroll-middle-y`, `scroll-bottom`, and `no-scroll-y`.
 
 For the x axis, the values are:
-`scroll-left`, `scroll-middle-x`, `scroll-right`, and `no-scroll-x`. 
+`scroll-left`, `scroll-middle-x`, `scroll-right`, and `no-scroll-x`.
 
 #### Example scrollInfo object
 ```
@@ -96,3 +96,7 @@ function Mycomponent(props) {
   );
 }
 ```
+
+## Broswer compatibilty
+This should work out of the box on all major browser, including Edge. However, it uses ResizeObserver to work completely flawless.
+If you want it to work on older browsers properly when the element is resized (but the viewport isn't), you'll need a ResizeObserver polyfill.

@@ -5,6 +5,25 @@ import { useRef, useState, useCallback } from 'react';
 const isEdge = /Edge\/\d./i.test(navigator.userAgent);
 
 
+// Small hook to use ResizeOberver if available. This fixes some issues when the component is resized.
+// This needs a polyfill to work on all browsers. The polyfill is not included in order to keep the package light.
+function useResizeObserver(ref, callback) {
+  useEffect(() => {
+    if (ResizeObserver) {
+      const resizeObserver = new ResizeObserver((entries) => {
+        callback(entries[0].contentRect);
+      });
+
+      resizeObserver.observe(ref.current);
+
+      return () => {
+        resizeObserver.disconnect();
+      };
+    }
+  }, [ref]);
+};
+
+
 function throttle(func, wait) {
   let context, args, result;
   let timeout = null;
@@ -43,9 +62,13 @@ function useScrollInfo() {
   const ref = useRef(null);
   const previousScroll = useRef(null);
 
+  useResizeObserver(ref, () => {
+    update();
+  });
+
   const throttleTime = 50;
 
-  function handleScroll() {
+  function update() {
     const element = ref.current;
     let maxY = element.scrollHeight - element.clientHeight;
     const maxX = element.scrollWidth - element.clientWidth;
@@ -98,19 +121,23 @@ function useScrollInfo() {
     setScroll(scrollInfo);
   }
 
-  const throttledHandleScroll = throttle(handleScroll, throttleTime);
+  const throttledUpdate = throttle(update, throttleTime);
 
   const setRef = useCallback(node => {
     if (node) {
       // When the ref is first set (after mounting)
-      node.addEventListener('scroll', throttledHandleScroll);
-      window.addEventListener('resize', throttledHandleScroll);
+      node.addEventListener('scroll', throttledUpdate);
+      if (!window.ResizeObserver) {
+        window.addEventListener('resize', throttledUpdate);  // Fallback if ResizeObserver is not available
+      }
       ref.current = node;
-      throttledHandleScroll();  // initialization
+      throttledUpdate();  // initialization
     } else if (ref.current) {
       // When unmounting
-      ref.current.removeEventListener('scroll', throttledHandleScroll);
-      window.removeEventListener('resize', throttledHandleScroll);
+      ref.current.removeEventListener('scroll', throttledUpdate);
+      if (!window.ResizeObserver) {
+        window.removeEventListener('resize', throttledUpdate);
+      }
     }
   }, []);
 

@@ -1,6 +1,6 @@
 {
   "name": "react-element-scroll-hook",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "A react hook to use the scroll information of an element",
   "main": "index.js",
   "repository": {
