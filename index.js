@@ -9,7 +9,7 @@ const isEdge = /Edge\/\d./i.test(navigator.userAgent);
 // This needs a polyfill to work on all browsers. The polyfill is not included in order to keep the package light.
 function useResizeObserver(ref, callback) {
   useEffect(() => {
-    if (ResizeObserver) {
+    if (window.ResizeObserver) {
       const resizeObserver = new ResizeObserver((entries) => {
         callback(entries[0].contentRect);
       });
