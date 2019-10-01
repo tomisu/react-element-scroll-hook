@@ -1,10 +1,13 @@
 # react-element-scroll-hook
+
 A react hook to use the scroll information of an element.
 
 ## Install
+
 `npm install react-element-scroll-hook`
 
 ## Usage
+
 ```
 // Import the hook
 import useScrollInfo from 'react-element-scroll-hook';
@@ -26,14 +29,17 @@ function Mycomponent(props) {
 ```
 
 ## scrollInfo object
+
 When using this hook, you'll get an object containing the scroll data. It has two keys, `x` and `y`, each of them contain the following keys:
- * value: amount of pixels scrolled
- * total: amount of pixels that can be scrolled
- * percentage: a value from 0 to 1 or `null` if there's no scroll
- * className: a string to identify the state of the scroll
- * direction: the direction of the last scroll: 1 for down/right, -1 for up/left, 0 for initial value
+
+- value: amount of pixels scrolled
+- total: amount of pixels that can be scrolled
+- percentage: a value from 0 to 1 or `null` if there's no scroll
+- className: a string to identify the state of the scroll
+- direction: the direction of the last scroll: 1 for down/right, -1 for up/left, 0 for initial value
 
 #### className
+
 For the y axis, className can take 4 values:
 `scroll-top`, `scroll-middle-y`, `scroll-bottom`, and `no-scroll-y`.
 
@@ -41,6 +47,7 @@ For the x axis, the values are:
 `scroll-left`, `scroll-middle-x`, `scroll-right`, and `no-scroll-x`.
 
 #### Example scrollInfo object
+
 ```
 {
   x: {
@@ -61,7 +68,9 @@ For the x axis, the values are:
 ```
 
 ## Basic Example
+
 In this basic example, we'll add the scroll Y className to a component, to later style it with CSS based on weather it's scrolle or not.
+
 ```
 // Import the hook
 import useScrollInfo from 'react-element-scroll-hook';
@@ -79,6 +88,7 @@ function Mycomponent(props) {
 ```
 
 ## Accessing the element ref
+
 If you also need to access the monitored element, you can use the third constant returned by `useScrollInfo`:
 
 ```
@@ -97,6 +107,7 @@ function Mycomponent(props) {
 }
 ```
 
-## Broswer compatibilty
+## Browser compatibility
+
 This should work out of the box on all major browser, including Edge. However, it uses ResizeObserver to work completely flawless.
 If you want it to work on older browsers properly when the element is resized (but the viewport isn't), you'll need a ResizeObserver polyfill.
