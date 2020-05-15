@@ -2,14 +2,14 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 
 
 // Edge has a bug where scrollHeight is 1px bigger than clientHeight when there's no scroll.
-const isEdge = /Edge\/\d./i.test(navigator.userAgent);
+const isEdge = typeof navigator !== 'undefined' && /Edge\/\d./i.test(window.navigator.userAgent);
 
 
 // Small hook to use ResizeOberver if available. This fixes some issues when the component is resized.
 // This needs a polyfill to work on all browsers. The polyfill is not included in order to keep the package light.
 function useResizeObserver(ref, callback) {
   useEffect(() => {
-    if (window.ResizeObserver) {
+    if (typeof window !== 'undefined' && window.ResizeObserver) {
       const resizeObserver = new ResizeObserver((entries) => {
         callback(entries[0].contentRect);
       });
