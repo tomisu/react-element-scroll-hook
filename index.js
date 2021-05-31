@@ -57,7 +57,7 @@ function throttle(func, wait) {
   };
 }
 
-function useScrollInfo() {
+function useScrollInfo(throttleTime = 50) {
   const [scroll, setScroll] = useState({ x: {}, y: {} });
   const ref = useRef(null);
   const previousScroll = useRef(null);
@@ -65,8 +65,6 @@ function useScrollInfo() {
   useResizeObserver(ref, () => {
     update();
   });
-
-  const throttleTime = 50;
 
   function update() {
     const element = ref.current;
